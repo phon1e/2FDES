@@ -52,7 +52,7 @@ cap.set(cv2.CAP_PROP_FRAME_WIDTH, 640)
 cap.set(cv2.CAP_PROP_FRAME_HEIGHT, 480)
 
 clf = cv2.face.LBPHFaceRecognizer_create()
-clf.read("job.xml")      #read file from tained file
+clf.read("model/job.xml")      #read file from tained file
 
 while(True):
     ret, frame = cap.read()
