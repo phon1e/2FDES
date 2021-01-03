@@ -6,3 +6,5 @@
 1. createDataset.py  นำ haarcascade จาก fodler cascade มา crop รูปไปเก็บfolder ชื่อ dataset
 2. predict_test.py  นำใบหน้าที่ได้ใน folder dataset ไปเก็บเป็น file .xml ใน folder model
 3. training.py  นำไฟล์ .xml มาอ่าน
+
+*เครื่องตรู vs code run ไม่ได้เลยใช้ sublimeText3 (*sublimeText3 ไม่มีตัวrun python ต้องทำเองหาเอาใน google)
