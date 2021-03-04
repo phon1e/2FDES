@@ -21,7 +21,7 @@ def draw_boundary(img, classifier, scaleFactor, minNeighbors, color, clf):
         id, conf = clf.predict(gray[y:y+h, x:x+w]) # _ -> confident value
 
         if id==1 and conf>=20 and conf <=80:  # 10-80%
-            cv2.putText(img,"Jobs",(x,y-4), cv2.FONT_HERSHEY_SIMPLEX,0.8,color,2)
+            cv2.putText(img,"Phonie",(x,y-4), cv2.FONT_HERSHEY_SIMPLEX,0.8,color,2)
         else:
             cv2.putText(img,"Unknown",(x,y-4), cv2.FONT_HERSHEY_SIMPLEX,0.8,color,2)
 
@@ -47,7 +47,7 @@ def detect(img, face_casc, img_id, clf):
 
 #opening vdo set w,h = 640x480
 img_id = 0
-cap = cv2.VideoCapture("vdo1.mp4")  
+cap = cv2.VideoCapture(0)  
 cap.set(cv2.CAP_PROP_FRAME_WIDTH, 640)
 cap.set(cv2.CAP_PROP_FRAME_HEIGHT, 480)
 
