@@ -3,8 +3,11 @@ import numpy as np
 from PIL import Image
 
 #Create haar cascade
-face_casc = cv2.CascadeClassifier("haarcascade_frontalface_default.xml")
-eyes_casc = cv2.CascadeClassifier("haarcascade_eye.xml")
+face_casc = cv2.CascadeClassifier("cascade/haarcascade_frontalface_default.xml")
+eyes_casc = cv2.CascadeClassifier("cascade/haarcascade_eye.xml")
+
+clf.cv2.face,LBPHFaceRecognizer_create()
+clf.read("model/phonie.xml")
 
 #training create dataset
 def create_dataset(img,id,img_id):
