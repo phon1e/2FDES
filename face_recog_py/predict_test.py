@@ -70,4 +70,14 @@ print("Fps using cap.get(cv2.CAP_PROP_FPS:{0}".format(fps))
     
 cap.release()
 cv2.destroyAllWindows()
+'''
+def markAttendance(name):
+    with open('Attendence.scv', 'r+') as f:
+        dList = f.readlines()
+        print(dList)
 
+def checkIdFromESP:
+    if _id in dList:
+        markAttendance(name)
+
+'''
