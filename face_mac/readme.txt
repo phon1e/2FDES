@@ -1,4 +1,4 @@
-create faces folder set picture name eg 1 2 3
+create faces folder then set picture name eg A B C
 intstall some lib 
 and run mainfile.py 
 in node mcu return index of mac addr
