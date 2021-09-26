@@ -68,13 +68,45 @@ def current_timeStr():
     now = datetime.now()
     return now.strftime("%d/%m/%Y %H:%M")
 
-def markAttendance(name):
+def hourminToInt(timeStr):
+    hourmin_tmp = timeStr.split(' ')[1].split(':')
+    hour_tmp = hourmin_tmp[0]
+    min_tmp = hourmin_tmp[1]
+    return int(hour_tmp[0]*60 + min_tmp[1])
+
+def writeTimeStamp(name):
     # write time stamp
     # 'a+' mode create file if not exist, write at the end of file
     f = open('Attendance.csv', 'a+')
     dt_string = current_timeStr()
     f.write(f'{name},{dt_string}\n')
-                    
+    print('\nCheck '+ name +' for new attendance.\n')
+
+checkInterval = 1 # check interval () minute(s)
+
+def markAttendance(name):
+    foundName = False
+    for i in range(0, len(markedNameList)):
+        if name == markedNameList[i]:
+            # found name in markedNameList
+            foundName = True
+            markedTime = hourminToInt(markedTimeList[i])
+            currentTime = hourminToInt(current_timeStr())
+            if currentTime - markedTime >= checkInterval:
+                # mark new attendance
+                writeTimeStamp(name)
+                markedTimeList[i] = current_timeStr()
+                break
+            else:
+                # not mark new attendance
+                print('\nFound '+ name +' . Not check for new attendance.\n')
+    # Not found name in markedNameList
+    # mark new attendance
+    if foundName is False:
+        writeTimeStamp(name)
+        markedNameList.append(name)
+        markedTimeList.append(current_timeStr())
+
 def webcam_disp():
     while True:
         sucess, frame = cap.read()
@@ -87,6 +119,8 @@ def webcam_disp():
         time.sleep(frame_delay)
     cap.release()
     cv2.destroyAllWindows()
+    print("\nClosing Program.")
+    os._exit(0)
 
 # face-recognition preset
 font = cv2.FONT_HERSHEY_SIMPLEX
@@ -119,10 +153,11 @@ def face_recog():
             valid_user = False
             if faceDis[matchIndex]< 0.50 and str(matchIndex) == mac_found:
                 name = classNames[matchIndex].upper()
-                markAttendance(name) #delete comment when use timestamp
                 valid_user = True
                 print('\ncheck '+ name +' done.')
-            else: name = 'Unknown'
+            else: 
+                name = 'Unknown'
+                valid_user = False
             # draw put name and rectangle on face detected
             y1, x2, y2, x1 = faceLoc
             y1, x2, y2, x1 = y1*4, x2*4, y2*4, x1*4
@@ -131,6 +166,7 @@ def face_recog():
             cv2.putText(img, name, (x1+6, y2-6), font,1,(255,255,255),2)
             # save time stamp image
             if valid_user is True:
+                markAttendance(name)
                 cv2.imwrite('RecordImages/'+name+current_timeStr()+'.png', img)                
         time.sleep(process_delay)
         
