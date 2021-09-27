@@ -9,6 +9,8 @@ path = 'ImagesAttendance/faces'
 images = []
 classNames = []
 faceList = []
+markedNameList = []
+markedTimeList = []
 cap = cv2.VideoCapture(0)
 
 def importImages():
@@ -154,7 +156,6 @@ def face_recog():
             if faceDis[matchIndex]< 0.50 and str(matchIndex) == mac_found:
                 name = classNames[matchIndex].upper()
                 valid_user = True
-                print('\ncheck '+ name +' done.')
             else: 
                 name = 'Unknown'
                 valid_user = False
@@ -182,6 +183,7 @@ if __name__ == "__main__":
     QueueThread = threading.Thread(target = mySerialEsp.runQ)
     # start thread
     WebcamThread.start()
+    time.sleep(3)
     FaceRecThread.start()
     QueueThread.start()
     
@@ -189,5 +191,3 @@ if __name__ == "__main__":
     #t1.join()
     #t2.join()
     #t3.join()
-  
-
