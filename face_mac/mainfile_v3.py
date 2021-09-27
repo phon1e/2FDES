@@ -11,6 +11,7 @@ classNames = []
 faceList = []
 markedNameList = []
 markedTimeList = []
+
 cap = cv2.VideoCapture(0)
 
 def importImages():
@@ -109,9 +110,11 @@ def markAttendance(name):
         markedNameList.append(name)
         markedTimeList.append(current_timeStr())
 
+
 def webcam_disp():
     while True:
         sucess, frame = cap.read()
+      
         # time interface
         cv2.putText(frame, current_timeStr(),(10,50), font,1, (0,255,255), 2, cv2.LINE_AA)
 
@@ -127,13 +130,18 @@ def webcam_disp():
 # face-recognition preset
 font = cv2.FONT_HERSHEY_SIMPLEX
 process_delay = 0.25 # delay 250 millisecond
-frame_rate = 30
+frame_rate = 24
 frame_delay = 1/frame_rate
 
 def face_recog():
+    
     while True:
         print("Face Recognition Processing...")
         sucess, img = cap.read()
+        while not sucess:
+            time.sleep(frame_delay)
+            sucess, img = cap.read()
+        
         imgS = cv2.resize(img,(0, 0), None, 0.25, 0.25)
         imgS = cv2.cvtColor(imgS, cv2.COLOR_BGR2RGB)
         # time interface
@@ -183,7 +191,6 @@ if __name__ == "__main__":
     QueueThread = threading.Thread(target = mySerialEsp.runQ)
     # start thread
     WebcamThread.start()
-    time.sleep(3)
     FaceRecThread.start()
     QueueThread.start()
     
