@@ -14,6 +14,10 @@ markedTimeList = []
 
 cap = cv2.VideoCapture(0)
 
+mac_list = {'0': ['0xe6,0xbc,0x50,0xb3,0x29,0xc6'],
+            '1':['0x12,0xa9,0x67,0x05,0xb6,0xf9'],
+            '2':['0xfc,0x1d,0x43,0x31,0x94,0xc5']}
+
 def importImages():
     print("Importing Images...\nFace List:")
     faceList = os.listdir(path)
@@ -77,17 +81,17 @@ def hourminToInt(timeStr):
     min_tmp = hourmin_tmp[1]
     return int(hour_tmp[0]*60 + min_tmp[1])
 
-def writeTimeStamp(name):
+def writeTimeStamp(name, mac):
     # write time stamp
     # 'a+' mode create file if not exist, write at the end of file
     f = open('Attendance.csv', 'a+')
     dt_string = current_timeStr()
-    f.write(f'{name},{dt_string}\n')
+    f.write(f'{name},{dt_string},{mac}\n')
     print('\nCheck '+ name +' for new attendance.\n')
 
 checkInterval = 1 # check interval () minute(s)
 
-def markAttendance(name):
+def markAttendance(name,mac):
     foundName = False
     for i in range(0, len(markedNameList)):
         if name == markedNameList[i]:
@@ -97,7 +101,7 @@ def markAttendance(name):
             currentTime = hourminToInt(current_timeStr())
             if currentTime - markedTime >= checkInterval:
                 # mark new attendance
-                writeTimeStamp(name)
+                writeTimeStamp(name,mac)
                 markedTimeList[i] = current_timeStr()
                 break
             else:
@@ -106,7 +110,7 @@ def markAttendance(name):
     # Not found name in markedNameList
     # mark new attendance
     if foundName is False:
-        writeTimeStamp(name)
+        writeTimeStamp(name,mac)
         markedNameList.append(name)
         markedTimeList.append(current_timeStr())
 
@@ -156,12 +160,15 @@ def face_recog():
             matchIndex = np.argmin(faceDis)
 
             mac_found = returnFunc(mySerialEsp.runQ)
+            #print(faceDis[matchIndex])
             print('mac founed is :' + mac_found + ' index founded is : '+ str(matchIndex))
             
             # compare between index of mac and index of picture
             # same? recog+timestamp: unknown
             valid_user = False
             if faceDis[matchIndex]< 0.50 and str(matchIndex) == mac_found:
+                ls = mac_list['{indx}'.format(indx = mac_found)]
+                #print(ls)
                 name = classNames[matchIndex].upper()
                 valid_user = True
             else: 
@@ -175,8 +182,8 @@ def face_recog():
             cv2.putText(img, name, (x1+6, y2-6), font,1,(255,255,255),2)
             # save time stamp image
             if valid_user is True:
-                markAttendance(name)
-                cv2.imwrite('RecordImages/'+name+current_timeStr()+'.png', img)                
+                markAttendance(name,ls)
+                cv2.imwrite('RecordImages/'+name+'1.png', img)                
         time.sleep(process_delay)
         
 if __name__ == "__main__":
