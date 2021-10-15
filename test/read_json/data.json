@@ -1,0 +1,25 @@
+{    
+    "users":{
+    
+        "1": [
+            {
+                "email": "6110110415@psu.ac.t",
+                "faceId": "415_face",
+                "mac": "444411115555",
+                "timeStamp" : "10-15-2021 10:00",
+                "username": "415_uname"
+
+            }
+        ],
+        "2":[
+            {
+               "email": "6110110044@psu.ac.t",
+                "faceId": "044_face",
+                "mac": "000044444444",
+                "timeStamp" : "10-15-2021 11:00",
+                "username": "044_uname"
+
+            }
+        ]
+    }
+}
