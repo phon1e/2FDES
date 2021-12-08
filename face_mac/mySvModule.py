@@ -1,4 +1,5 @@
 from firebase import firebase as fb
+improt json
 
 def insertDb(url,path, myData, key):
 
@@ -33,3 +34,9 @@ def readJs(filename):
     with open(filename) as json_file:
         d = json.load(json_file)
     return d
+
+def loadJs(data, filename, ind):
+    json_object = json.dumps(data, indent= ind)
+    with open(filename, 'w', encoding='utf-8') as outfile:
+        outfile.write(json_object)
+
