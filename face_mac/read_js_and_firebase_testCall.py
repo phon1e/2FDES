@@ -28,8 +28,7 @@ for i in range(3):
         print(f'Found {ids} in { db["users"][str(i)]["mac"]}' )
         print(f'checked {db["users"][str(i)]["username"]}')
 
-# output
-#     Found
-#     4444444443 in ['0000000001', '4444444443', '4444444445']
-#     044
-#     _uname
+#output
+#Read from json
+#Found 4444444443 in ['0000000001', '4444444443', '4444444445']
+#checked 044_uname
