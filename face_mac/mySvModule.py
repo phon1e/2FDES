@@ -1,39 +1,39 @@
 from firebase import firebase as fb
-improt json
+import json
 
 def insertDb(url,path, myData, key):
-
-    firebase = fb.FirebaseApplication(url, None)
-    #path = '/dbUser/User'
-    result = firebase.post(path, myData)
-    # key = '-MpztlIWjJcoY81LOBHv'
-    result = firebase.delete(path,key)
+    if all(isinstance(i, str) for i in [url, path, myData, key]):
+        firebase = fb.FirebaseApplication(url, None)
+        result = firebase.post(path, myData)
+    raise TypeError('All must be String ! !')
 
 def readDb(url,path):
-
-    firebase = fb.FirebaseApplication(url, None)
-    result = firebase.get(path, '')
-    # print(result['-MpztlIWjJcoY81LOBHv']['faceId'])
-    return result
-
+    if all(isinstance(i, str) for i in [url, path]):
+        firebase = fb.FirebaseApplication(url, None)
+        result = firebase.get(path, '')
+        return result
+    raise TypeError('All must be String ! !')
 
 def updateDb(url, path, user, key, val ):
-    firebase = fb.FirebaseApplication(url, None)
-    result = firebase.put(f'{path}/{user}', key, val)
-
-    print(result)
+    if all(isinstance(i, str) for i in [url, path, user, key, val]):
+        firebase = fb.FirebaseApplication(url, None)
+        result = firebase.put(f'{path}/{user}', key, val)
+        print(f'updated\n {result}')
+    raise TypeError('All must be String ! !')
 
 def deleteDb(url, path, key):
-
-    firebase = fb.FirebaseApplication(url, None)
-    result = firebase.delete(path, key)
-    print('record deleted')
+    if all(isinstance(i, str) for i in [url, path,key]):
+        firebase = fb.FirebaseApplication(url, None)
+        result = firebase.delete(path, key)
+        print('record deleted')
+    raise TypeError('All must be String ! !')
 
 def readJs(filename):
-    import json
-    with open(filename) as json_file:
-        d = json.load(json_file)
-    return d
+   if (isinstance(filename,str)):
+        with open(filename) as json_file:
+            d = json.load(json_file)
+        return d
+   raise TypeError('All must be String ! !')
 
 def loadJs(data, filename, ind):
     json_object = json.dumps(data, indent= ind)
