@@ -3,7 +3,7 @@ from firebase import firebase as fb
 def insertDb(url,path, myData, key):
 
     firebase = fb.FirebaseApplication(url, None)
-    path = '/dbUser/User'
+    #path = '/dbUser/User'
     result = firebase.post(path, myData)
     # key = '-MpztlIWjJcoY81LOBHv'
     result = firebase.delete(path,key)
