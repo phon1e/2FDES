@@ -1,4 +1,4 @@
-import mySvModule, time
+import mySvModule, time, json
 
 start1 = time.time()
 
@@ -8,6 +8,7 @@ path = f'/dbUser/{key}/users'
 
 
 d = mySvModule.readDb(url,path)
+
 
 i = 0
 ids = '4444444443'
@@ -41,6 +42,8 @@ print(f'execution time {end2 - start2} sec' )
 #     4444444443 in ['0000000001', '4444444443', '4444444445']
 #     044
 #     _uname
+mySvModule.loadJs(d, 'new.json',5)
 
-
-
+js = mySvModule.readJs('new.json')
+print(f'read from firebase db {d}')
+print(f'read from loaded file {js}')
