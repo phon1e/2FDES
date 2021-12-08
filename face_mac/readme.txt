@@ -1,4 +1,10 @@
-create faces folder then set picture name eg A B C
-intstall some lib 
-and run mainfile.py 
-in node mcu return index of mac addr
+for mySvModule 
+
+firebase requirement lib list:
+  requests
+  firebase
+  jwt
+  gcloud
+  sseclient
+  pycryptodome
+  requests-toolbelt
