@@ -1,7 +1,8 @@
+from firebase import firebase as fb
 
 def insertDb(url,path, myData, key):
-    from firebase import firebase
-    firebase = firebase.FirebaseApplication(url, None)
+
+    firebase = fb.FirebaseApplication(url, None)
     path = '/dbUser/User'
     result = firebase.post(path, myData)
     # key = '-MpztlIWjJcoY81LOBHv'
@@ -9,25 +10,26 @@ def insertDb(url,path, myData, key):
 
 def readDb(url,path):
 
-    from firebase import firebase
-    firebase = firebase.FirebaseApplication(url, None)
-
+    firebase = fb.FirebaseApplication(url, None)
     result = firebase.get(path, '')
     # print(result['-MpztlIWjJcoY81LOBHv']['faceId'])
     return result
 
 
 def updateDb(url, path, user, key, val ):
-    from firebase import firebase
-    firebase = firebase.FirebaseApplication(url, None)
-
+    firebase = fb.FirebaseApplication(url, None)
     result = firebase.put(f'{path}/{user}', key, val)
 
     print(result)
 
 def deleteDb(url, path, key):
-    from firebase import firebase
-    firebase = firebase.FirebaseApplication(url, None)
-    result = firebase.delete(path, key)
 
+    firebase = fb.FirebaseApplication(url, None)
+    result = firebase.delete(path, key)
     print('record deleted')
+
+def readJs(filename):
+    import json
+    with open(filename) as json_file:
+        d = json.load(json_file)
+    return d
