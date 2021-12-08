@@ -18,8 +18,9 @@ for i in range(3):
           print(f'checked {d[i]["username"]}')
 
 # output
-# found 4444444443 in ['0000000001', '4444444443', '4444444445']
-# checked 044_uname
+#Read from firebase
+#found 4444444443 in ['0000000001', '4444444443', '4444444445']
+#checked 044_uname
 
 db = mySvModule.readJs("data.json")
 print("\nRead from json")
