@@ -19,7 +19,7 @@ def updateDb(url, path, user, key, val ):
     firebase = fb.FirebaseApplication(url, None)
     result = firebase.put(f'{path}/{user}', key, val)
     print(f'updated\n {result}')
-    print(f"{type(url)} {type(path)} {type(user)} {type(key)} {type(val)}")
+    #print(f"{type(url)} {type(path)} {type(user)} {type(key)} {type(val)}")
     # else: print('All must be String ! !')
 
 def deleteDb(url, path, key):
