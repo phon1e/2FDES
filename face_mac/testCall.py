@@ -4,7 +4,7 @@ url = 'https://sendfrompytest-default-rtdb.firebaseio.com/'
 key = '-MqHz5m_algE-XHj4WXM'
 path = f'/dbUser/{key}/users'
 
-def test():
+def testRead():
     start1 = time.time()
     d = mySvModule.readDb(url,path)
     i = 0
@@ -50,7 +50,7 @@ def test():
     #print(f'read from loaded file {js}')
 
 # update mac to db
-def test2():
+def testModify():
     c = 0
     # mac_list = {'0': '0xe6,0xbc,0x50,0xb3,0x29,0xc6',
     #             '1': '0x12,0xa9,0x67,0x05,0xb6,0xf9',
