@@ -15,11 +15,12 @@ def readDb(url,path):
     raise TypeError('All must be String ! !')
 
 def updateDb(url, path, user, key, val ):
-    if all(isinstance(i, str) for i in [url, path, user, key, val]):
-        firebase = fb.FirebaseApplication(url, None)
-        result = firebase.put(f'{path}/{user}', key, val)
-        print(f'updated\n {result}')
-    raise TypeError('All must be String ! !')
+    # if all(isinstance(i, str) for i in [url, path, user, key, val]):
+    firebase = fb.FirebaseApplication(url, None)
+    result = firebase.put(f'{path}/{user}', key, val)
+    print(f'updated\n {result}')
+    print(f"{type(url)} {type(path)} {type(user)} {type(key)} {type(val)}")
+    # else: print('All must be String ! !')
 
 def deleteDb(url, path, key):
     if all(isinstance(i, str) for i in [url, path,key]):
