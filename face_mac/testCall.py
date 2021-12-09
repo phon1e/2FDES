@@ -57,11 +57,22 @@ def test2():
     #             '2': '0xfc,0x1d,0x43,0x31,0x94,0xc5'}
     mac_list = mySvModule.readJs("new.json")
 
+    ######### update mac from json file to db ###########
     for i in mac_list[c]['mac']:
         mySvModule.updateDb(url, path, f'{c}/mac',str(c),str(i) )
         c+=1
-test2()
+
+    ########## add new mac to db ###############
+    # mySvModule.updateDb(url, path, '0/mac','3','123')
+
+    ########## delete specific mac from db #####
+
+    # mySvModule.deleteDb(url,f"{path}/0/mac",'3')
+
+    ####### testing #########
+# test2()
 # test()
+
 '''             
 ###################### test() output on window and pi4 ##################### 
 output:
