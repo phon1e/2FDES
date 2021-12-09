@@ -19,6 +19,10 @@ def test():
     end1 = time.time()
     diff1 = end1 - start1
     print(f'execution time {diff1:.6f} sec' )
+
+    # output
+    # found 4444444443 in ['0000000001', '4444444443', '4444444445']
+    # checked 044_uname
     start2 = time.time()
 
 
@@ -36,20 +40,28 @@ def test():
 
 
     print(f"\ndiff read time between local and server : {(diff1 - diff2):.6f} sec")
+    # output
+    #     Found
+    #     4444444443 in ['0000000001', '4444444443', '4444444445']
+    #     044
+    #     _uname
+
+    #print(f'read from firebase db {d}')
+    #print(f'read from loaded file {js}')
 
 # update mac to db
 def test2():
     c = 0
-    mac_list = {'0': '0xe6,0xbc,0x50,0xb3,0x29,0xc6',
-                '1': '0x12,0xa9,0x67,0x05,0xb6,0xf9',
-                '2': '0xfc,0x1d,0x43,0x31,0x94,0xc5'}
+    # mac_list = {'0': '0xe6,0xbc,0x50,0xb3,0x29,0xc6',
+    #             '1': '0x12,0xa9,0x67,0x05,0xb6,0xf9',
+    #             '2': '0xfc,0x1d,0x43,0x31,0x94,0xc5'}
+    mac_list = mySvModule.readJs("new.json")
 
-    for i in mac_list.values():
-        mySvModule.updateDb(url, path, '0/mac',str(c),str(i) )
+    for i in mac_list[c]['mac']:
+        mySvModule.updateDb(url, path, f'{c}/mac',str(c),str(i) )
         c+=1
 test2()
 # test()
-
 '''             
 ###################### test() output on window and pi4 ##################### 
 output:
