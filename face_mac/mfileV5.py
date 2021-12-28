@@ -86,7 +86,6 @@ def current_timeStr():
     now = datetime.now()
     return now.strftime("%d/%m/%Y %H:%M")
 
-
 def hourminToInt(timeStr):
     hourmin_tmp = timeStr.split(' ')[1].split(':')
     hour_tmp = hourmin_tmp[0]
