@@ -99,3 +99,26 @@ updated
  0xfc,0x1d,0x43,0x31,0x94,0xc5
 
 '''
+###############################################################################################################################################################
+##################################################### Find mac in json file ###################################
+import mySvModule, time, json
+
+d = mySvModule.readJs("new.json")
+
+print(d) # print all in json
+found_mac = "0x12,0xa9,0x67,0x05,0xb6,0xf9" #assume found this addr
+
+
+for c in range(1,3):
+    for i in d[f"user{c}"]["mac"]: 
+        if(found_mac in i):
+            print(f"Found {found_mac} in user{c}")
+
+'''
+output 
+
+{'user1': {'email': '6110110415@gmail.com', 'faceId': '415_faceId', 'mac': ['0xe6,0xbc,0x50,0xb3,0x29,0xc6', '0x12,0xa9,0x67,0x05,0xb6,0xf9', '0xfc,0x1d,0x43,0x31,0x94,0xc5'], 'timeStamp': ['18/12/2021 10:27', '24/12/2021 09:56'], 'uname': 'uname1'}, 'user2': {'email': '6110110044@gmail.com', 'faceId': '044_faceId', 'mac': ['0xe6,0xbc,0x50,0x29,0xc6,0xb3', '0x12,0xa9,0x67,0x05,,0xf9,0xb6', '0xfc,0x1d,0xc5,0x43,0x31,0x94'], 'timeStamp': ['18/12/2021 10:27', None, '24/12/2021 09:57'], 'uname': 'uname2'}}
+Found 0x12,0xa9,0x67,0x05,0xb6,0xf9 in user1
+'''
+
+
