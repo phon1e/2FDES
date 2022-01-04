@@ -170,7 +170,7 @@ def sliceStr(s):
         #print(uID, macID)
         
     else:
-        uID,macID = "0", "0"
+        uID,macID = "0", "0" # no 0_0 in db so not error when values is ""
     
     return uID, macID
 def face_recog():
@@ -196,8 +196,8 @@ def face_recog():
 
             qReturned = returnFunc(mySerialEsp2.runQ)
             uID, mac_found = sliceStr(qReturned)
-            print(mac_found)
-            print(str(matchIndex))
+            #print(mac_found) 
+            #print(str(matchIndex))
             #print(f'mac founded is :{mac_found} index founded is : {str(matchIndex)}')
             
             # compare between index of mac and index of picture
