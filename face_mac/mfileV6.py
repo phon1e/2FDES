@@ -1,10 +1,14 @@
 '''
 ** Notes **
 Version 6 Changes 
+
 1) Change the data that send from esp8266 from single num (eg. 0, 1, 2) to a pair of num (eg. 1_1, 1_2) 
     1_2 separate by "_" which mean 1 : index of user.
                                    2 : index of user's mac address(device).
     (eg. detect device 3 of user 1 the data will send 1_3.)
+   
+   *Added sliceStr() function to seperate string.
+
 2) Change from reading data in a file to read from JSON file that downloaded from firebase database.
 3) Added a timestamp to local/firebase server by stamp time to server and stamp username, mac address to local DB.
 '''
