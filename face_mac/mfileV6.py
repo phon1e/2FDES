@@ -2,7 +2,7 @@
 ** Notes **
 Version 6 Changes 
 1) change the data that send from ecp8266 from single num (eg. 0, 1, 2) to a pair of num (1_1, 1_2) 
-    1_2 separate by "_" which mean 1 : index of user 
+    1_2 separate by "_" which mean 1 : index of user.
                                    2 : index of user's mac address.
 2) change from reading data in a file to read from JSON file that downloaded from firebase database.
 3) added a timestamp to local/firebase server by stamp time to server and stamp username, mac address to local DB.
