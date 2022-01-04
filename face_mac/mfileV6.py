@@ -1,3 +1,14 @@
+'''
+** Notes **
+Version 6 Changes 
+1) data send from ecp8266 from single num (eg. 0, 1, 2) to 1_1, 1_2 
+    1_2 seperate by "_" which mean 1 : index of user 
+                                   2 : index of user's mac address .
+2) change from read data in file to read from json file that downloaded from firebase database .
+3) added time stamp to local/firebase server by stamp time to server and stamp username, mac address to local db.
+
+'''
+
 import numpy as np
 import cv2, face_recognition, os, PIL
 from datetime import datetime
