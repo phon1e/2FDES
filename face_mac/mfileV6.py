@@ -1,7 +1,7 @@
 '''
 ** Notes **
 Version 6 Changes 
-1) Change the data that send from esp8266 from single num (eg. 0, 1, 2) to a pair of num (1_1, 1_2) 
+1) Change the data that send from esp8266 from single num (eg. 0, 1, 2) to a pair of num (eg. 1_1, 1_2) 
     1_2 separate by "_" which mean 1 : index of user.
                                    2 : index of user's mac address(device).
     (eg. detect device 3 of user 1 the data will send 1_3.)
