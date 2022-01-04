@@ -1,7 +1,7 @@
 '''
 ** Notes **
 Version 6 Changes 
-1) Change the data that send from ecp8266 from single num (eg. 0, 1, 2) to a pair of num (1_1, 1_2) 
+1) Change the data that send from esp8266 from single num (eg. 0, 1, 2) to a pair of num (1_1, 1_2) 
     1_2 separate by "_" which mean 1 : index of user.
                                    2 : index of user's mac address.
 2) Change from reading data in a file to read from JSON file that downloaded from firebase database.
