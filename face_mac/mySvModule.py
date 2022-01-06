@@ -42,7 +42,7 @@ def loadJs(data, filename, ind):    #load json file from server and save as new 
         outfile.write(json_object)
 
 def getKeyDict(ls, indx):   # input ls to auto create dict and return key of specific indx.
-    enum = enumerate(ls)
+    enum = enumerate(ls,1) # start at 1
     d = dict((i,j) for j,i in enum)
     k = list(d.keys())[list(d.values()).index(indx)]
     return k
