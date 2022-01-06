@@ -41,3 +41,8 @@ def loadJs(data, filename, ind):
     with open(filename, 'w', encoding='utf-8') as outfile:
         outfile.write(json_object)
 
+def getKeyDict(ls, indx):
+    enum = enumerate(ls)
+    d = dict((i,j) for j,i in enum)
+    k = list(d.keys())[list(d.values()).index(indx)]
+    return k
