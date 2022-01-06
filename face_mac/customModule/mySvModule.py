@@ -3,7 +3,7 @@ import json
 
 def insertDb(url,path, myData, key):    #add new db to server
     firebase = fb.FirebaseApplication(url, None)
-    result = firebase.post(path, myData)
+    result = firebase.put(path, key, myData)
 
 
 def readDb(url,path):   #read db from server
