@@ -48,6 +48,7 @@ def getDictKey(ls, indx):
     d = dict((i,j) for j,i in enum)
     k = list(d.keys())[list(d.values()).index(indx)]
     return k
+
 def uploadImg(config_file, folder, filename, file):
     config = readJs(config_file)
     firebase = pyrebase.initialize_app(config)
