@@ -1,41 +1,49 @@
 from firebase import firebase as fb
-import json
+import json, firebase_admin
+import pyrebase
 
-def insertDb(url,path, myData, key):    #add new db to server
+def init():
+    firebaseConfig = readJs('config.json')
+    firebase = pyrebase.initialize_app(firebaseConfig)
+    return firebase.database()
+
+
+def insertDb(url,path, data):
     firebase = fb.FirebaseApplication(url, None)
-    result = firebase.put(path, key, myData)
+    result = firebase.put(path,"users", data)
 
 
-def readDb(url,path):   #read db from server
-    firebase = fb.FirebaseApplication(url, None)
-    result = firebase.get(path, '')
-    return result
+def readDb(config_file):
+    db = init()
+    return db.get()
+
+def timestamp(user_id, record, time):
+    db = init()
+    d = db.child('users').child(f"{user_id}").child('timestamp').update({f"record{record}":f"{time}"})
+    print(f'updated',d)
 
 
-def updateDb(url, path, user, key, val ):   #update value in db
-    firebase = fb.FirebaseApplication(url, None)
-    result = firebase.put(f'{path}/{user}', key, val)
-    print(f'updated\n {result}')
+def deleteDb(url, path, key):
+    init()
+    db = fb.database()
 
-
-def deleteDb(url, path, key):   #delete specific path in db
     firebase = fb.FirebaseApplication(url, None)
     result = firebase.delete(path, key)
     print('record deleted')
 
-def readJs(filename):   #read json file
-    if (isinstance(filename,str)):
+def readJs(filename):
+   if (isinstance(filename,str)):
         with open(filename) as json_file:
             d = json.load(json_file)
         return d
    raise TypeError('All must be String ! !')
 
-def loadJs(data, filename, ind):    #load json file from server and save as new file.
+def loadJs(data, filename, ind):
     json_object = json.dumps(data, indent= ind)
     with open(filename, 'w', encoding='utf-8') as outfile:
         outfile.write(json_object)
 
-def getKeyDict(ls, indx):   # input ls to auto create dict and return key of specific indx.
+def getDictKey(ls, indx):
     enum = enumerate(ls)
     d = dict((i,j) for j,i in enum)
     k = list(d.keys())[list(d.values()).index(indx)]
