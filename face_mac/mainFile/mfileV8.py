@@ -5,12 +5,7 @@ import mySerialEsp2, time, threading
 import concurrent.futures
 import mySvModule
 import time
-###############################################################
-url = 'https://sendfrompytest-default-rtdb.firebaseio.com/'
-key = 'users'
-pathDb = ''
 
-###############################################################
 path = 'ImagesAttendance/faces'
 images = []
 classNames = []
