@@ -26,7 +26,7 @@ def timestamp(user_id):
         curr_day = (list(last_time_stamp.val().values()))[-1][:2] # get current day
         
         if (curr_day >= last_day_in_month):  # check if current record >= days in current month then set record to 1
-         #   record = 1
+            record = 1
 
         d = db.child('users').child(user_id).child('timestamp').update({f'record{record}': f"{dt}"})
 
