@@ -23,8 +23,9 @@ def timestamp(user_id):
         last_record = list(last_time_stamp.val())[-1]  # get lastest timestamp
         pos = last_record[6:]  # get lastest no of timestamp eg. record30 got "30"
         record = int(pos) + 1  # last record + 1 for next timestamp eg. record30 --> record31
-
-        #if (record >= last_day_in_month):  # check if current record >= days in current month then set record to 1
+        curr_day = (list(last_time_stamp.val().values()))[-1][:2] # get current day
+        
+        if (curr_day >= last_day_in_month):  # check if current record >= days in current month then set record to 1
          #   record = 1
 
         d = db.child('users').child(user_id).child('timestamp').update({f'record{record}': f"{dt}"})
