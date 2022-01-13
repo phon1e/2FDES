@@ -9,20 +9,9 @@ def init():
     firebase = pyrebase.initialize_app(firebaseConfig)
     return firebase.database()
 
-
-def insertDb(url,path, data):
-    firebase = fb.FirebaseApplication(url, None)
-    result = firebase.put(path,"users", data)
-
-
-def readDb():
-    db = init()
-    return db.get()
-
-
 def timestamp(user_id):
     db = init()
-    now = datetime.now()  # get current datatime 
+    now = datetime.now()  # get current datatime
     dt = now.strftime("%d/%m/%Y %H:%M")  # format datetime
     last_day_in_month = calendar.monthrange(now.year, now.month)[1]  # check how many day in current month
     last_time_stamp = db.child("users").child(user_id).child("timestamp").order_by_key().get()  # get timestamp list
@@ -31,23 +20,14 @@ def timestamp(user_id):
         record = 1
         d = db.child('users').child(user_id).child('timestamp').update({f'record{record}': f"{dt}"})
     else:
-        last_record = list(last_time_stamp.val())[-1]  # get lastest timestamp 
-        pos = last_record[6:]  # get lastest no of timestamp eg. record30 got "30" 
+        last_record = list(last_time_stamp.val())[-1]  # get lastest timestamp
+        pos = last_record[6:]  # get lastest no of timestamp eg. record30 got "30"
         record = int(pos) + 1  # last record + 1 for next timestamp eg. record30 --> record31
 
         if (record >= last_day_in_month):  # check if lastest record >= days in current month then reset record to 1
             record = 1
 
         d = db.child('users').child(user_id).child('timestamp').update({f'record{record}': f"{dt}"})
-
-
-def deleteDb(url, path, key):
-    init()
-    db = fb.database()
-
-    firebase = fb.FirebaseApplication(url, None)
-    result = firebase.delete(path, key)
-    print('record deleted')
 
 def readJs(filename):
    if (isinstance(filename,str)):
