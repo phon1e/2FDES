@@ -182,13 +182,14 @@ def face_recog():
 
         faceCurFrame = face_recognition.face_locations(imgS)
         encodesCurFrame = face_recognition.face_encodings(imgS, faceCurFrame)
-
+        qReturned = returnFunc(mySerialEsp2.runQ)
+        
         for encodeFace, faceLoc in zip(encodesCurFrame, faceCurFrame):
             matches = face_recognition.compare_faces(encodeListKnown, encodeFace)
             faceDis = face_recognition.face_distance(encodeListKnown, encodeFace)
             matchIndex = np.argmin(faceDis)
 
-            qReturned = returnFunc(mySerialEsp2.runQ)
+            
             uID, mac_found = sliceStr(qReturned)
             userKey = mySvModule.getDictKey(uKey_list, int(uID))
             #print(mac_found)
