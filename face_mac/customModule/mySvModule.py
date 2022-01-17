@@ -14,22 +14,24 @@ def timestamp(user_id):
     now = datetime.now()  # get current datatime
     dt = now.strftime("%d/%m/%Y %H:%M")  # format datetime
     last_day_in_month = calendar.monthrange(now.year, now.month)[1]  # check how many day in current month
-    last_time_stamp = db.child("users").child(user_id).child("timestamp").order_by_key().get()  # get timestamp list
+    timestamp_ls = db.child("users").child(user_id).child("timestamp").order_by_key().get()  # get timestamp list
 
-    if (last_time_stamp.val() is None):  # if no timestamp add record1
-        print("No timestamp record, Creating a new timestamp...")
+    if (timestamp_ls.val() is None):  # if no timestamp add record1
         record = 1
-        d = db.child('users').child(user_id).child('timestamp').update({f'record{record}': f"{dt}"})
+        d = db.child('users').child(user_id).child('timestamp').order_by_key().update({f'record0{record}': f"{dt}"})
     else:
-        last_record = list(last_time_stamp.val())[-1]  # get lastest timestamp
-        pos = last_record[6:]  # get lastest no of timestamp eg. record30 got "30"
-        record = int(pos) + 1  # last record + 1 for next timestamp eg. record30 --> record31
-        curr_day = (list(last_time_stamp.val().values()))[-1][:2] # get current day
-        
-        if (int(curr_day) > last_day_in_month):  # reset record every month
-            record = 1
+        last_record = list(timestamp_ls.val())[-1]  # get lastest timestamp
+        pos = last_record[-2:]  # get lastest no of timestamp eg. record30 got "30", record01 got "01"
+        record = int(pos) + 1
 
-        d = db.child('users').child(user_id).child('timestamp').update({f'record{record}': f"{dt}"})
+        if record<10:
+            d = db.child('users').child(user_id).child('timestamp').order_by_child('timestamp').update({f'record0{record}': f"{dt}"})
+
+        elif record > last_day_in_month:
+            loadJs(timestamp_ls.val(),f'timestamp/{user_id}.json',5) # save to local
+            d = db.child('users').child(user_id).child('timestamp').remove() #delete record when end of month
+        else:
+            d = db.child('users').child(user_id).child('timestamp').order_by_child('timestamp').update({f'record{record}': f"{dt}"})
 
 def readJs(filename):
    if (isinstance(filename,str)):
@@ -53,5 +55,4 @@ def uploadImg(folder, filename, file):
     firebaseConfig = readJs('config.json')
     firebase = pyrebase.initialize_app(firebaseConfig)
     storage = firebase.storage()
-
     storage.child(f"{folder}/{filename}").put(file)
