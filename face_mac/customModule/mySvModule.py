@@ -1,3 +1,5 @@
+import csv
+
 from firebase import firebase as fb
 import json
 import pyrebase
@@ -21,15 +23,16 @@ def timestamp(user_id):
         d = db.child('users').child(user_id).child('timestamp').order_by_key().update({f'record0{record}': f"{dt}"})
     else:
         last_record = list(timestamp_ls.val())[-1]  # get lastest timestamp
-        pos = last_record[-2:]  # get lastest no of timestamp eg. record30 got "30", record01 got "01"
+        pos = last_record[-2:]  # get lastest no of timestamp eg. record_30 got "30"
         record = int(pos) + 1
 
         if record<10:
             d = db.child('users').child(user_id).child('timestamp').order_by_child('timestamp').update({f'record0{record}': f"{dt}"})
 
         elif record > last_day_in_month:
-            loadJs(timestamp_ls.val(),f'timestamp/{user_id}.json',5) # save to local
-            d = db.child('users').child(user_id).child('timestamp').remove() #delete record when end of month
+            write_csv(list(timestamp_ls.val().values()),f'timestamp/{user_id}.csv')
+
+            d = db.child('users').child(user_id).child('timestamp').remove()
         else:
             d = db.child('users').child(user_id).child('timestamp').order_by_child('timestamp').update({f'record{record}': f"{dt}"})
 
@@ -56,3 +59,8 @@ def uploadImg(folder, filename, file):
     firebase = pyrebase.initialize_app(firebaseConfig)
     storage = firebase.storage()
     storage.child(f"{folder}/{filename}").put(file)
+
+def write_csv(data,filename):
+    with open(filename, 'w', encoding='UTF8') as f:
+        writer = csv.writer(f)
+        writer.writerow(data)
