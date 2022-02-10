@@ -16,26 +16,19 @@ def timestamp(user_id):
     now = datetime.now()  # get current datatime
     dt = now.strftime("%d/%m/%Y %H:%M")  # format datetime
     last_day_in_month = calendar.monthrange(now.year, now.month)[1]  # check how many day in current month
-    timestamp_ls = db.child("users").child(user_id).child("timestamp").order_by_key().get()  # get timestamp list
+    timestamp_ls = db.child("users").child(user_id).child("timestamp").child(now.strftime('%B')).order_by_key().get()  # get timestamp list
 
 
     if (timestamp_ls.val() is None):  # if no timestamp add record1
         record = 1
-        d = db.child('users').child(user_id).child('timestamp').order_by_key().update({f'record0{record}': f"{dt}"})
+        d = db.child('users').child(user_id).child('timestamp').child(now.strftime('%B')).order_by_key().update({f'record0{record}': f"{dt}"})
     else:
         last_record = list(timestamp_ls.val())[-1]  # get lastest timestamp
         pos = last_record[-2:]  # get lastest no of timestamp eg. record_30 got "30"
         record = int(pos) + 1
         curr_day = (list(timestamp_ls.val().values()))[-1][:2]  # get current day
+        d = db.child('users').child(user_id).child('timestamp').child(now.strftime('%B')).update({f'record{str(record).zfill(2)}': f"{dt}"})
 
-        if record<10:
-            d = db.child('users').child(user_id).child('timestamp').order_by_child('timestamp').update({f'record0{record}': f"{dt}"})
-        else:
-            d = db.child('users').child(user_id).child('timestamp').order_by_child('timestamp').update({f'record{record}': f"{dt}"})
-
-        if int(curr_day)+1 >= last_day_in_month:    #check lastday of month then save to csv file and delete record csv file size is half of json file
-            write_csv(list(timestamp_ls.val().values()),f'timestamp/{user_id}.csv')
-            d = db.child('users').child(user_id).child('timestamp').remove()
 
 
 def readJs(filename):
