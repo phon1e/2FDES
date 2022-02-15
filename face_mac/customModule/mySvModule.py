@@ -8,8 +8,10 @@ import urllib.request
 def init():
     firebaseConfig = readJs('config.json')
     firebase = pyrebase.initialize_app(firebaseConfig)
-    print( 'server connected' if connect() else 'no internet!' )
-    return firebase.database()
+    if connect(): 
+        return firebase.database()
+    else:
+        print("No internet")
 
 def timestamp(user_id):
     db = init()
