@@ -169,7 +169,7 @@ def sliceStr(s):
     return uID, macID
 
 def face_recog():
-    mac_pool = []
+    mac_pool = set()
     while True:
 #         print("Face Recognition Processing...")
         sucess, img = cap.read()
@@ -188,10 +188,8 @@ def face_recog():
         qReturned = returnFunc(mySerialEsp2.runQ)
         uID, mac_found = sliceStr(qReturned)
         
-        mac_pool.append(mac_found)
+        mac_pool.add(mac_found)
         print(f"Adding {mac_found} to pool")
-            
-        mac_pool = list(dict.fromkeys(mac_pool))
         print(f"current mac pool : {mac_pool}")
         
         for encodeFace, faceLoc in zip(encodesCurFrame, faceCurFrame):
