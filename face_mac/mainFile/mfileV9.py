@@ -169,7 +169,7 @@ def sliceStr(s):
     return uID, macID
 
 def face_recog():
-    mac_pool = set()
+    user_around = set()
     while True:
 #         print("Face Recognition Processing...")
         sucess, img = cap.read()
@@ -188,9 +188,8 @@ def face_recog():
         qReturned = returnFunc(mySerialEsp2.runQ)
         uID, mac_found = sliceStr(qReturned)
         
-        mac_pool.add(mac_found)
-        print(f"Adding {mac_found} to pool")
-        print(f"current mac pool : {mac_pool}")
+        user_around.add(uID)
+        print(f"current mac pool : {uID}")
         
         for encodeFace, faceLoc in zip(encodesCurFrame, faceCurFrame):
             matches = face_recognition.compare_faces(encodeListKnown, encodeFace)
@@ -202,7 +201,7 @@ def face_recog():
             valid_user = False
 
             
-            if faceDis[matchIndex] < 0.50 and str(matchIndex) in mac_pool:
+            if faceDis[matchIndex] < 0.50 and str(matchIndex) in user_around:
                 name = db[key][userKey]["username"]
                 mac = db[key][userKey]["macAddress"][f"device{mac_found}"]
                 valid_user = True
