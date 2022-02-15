@@ -3,10 +3,12 @@ import json
 import pyrebase
 from datetime import datetime
 import calendar
+import urllib.request
 
 def init():
     firebaseConfig = readJs('config.json')
     firebase = pyrebase.initialize_app(firebaseConfig)
+    print( 'server connected' if connect() else 'no internet!' )
     return firebase.database()
 
 def timestamp(user_id):
@@ -56,3 +58,10 @@ def write_csv(data,filename):
     with open(filename, 'w', encoding='UTF8') as f:
         writer = csv.writer(f)
         writer.writerow(data)
+        
+def connect(host='https://firebase.google.com/'):
+    try:
+        urllib.request.urlopen(host)
+        return True
+    except:
+        return False
