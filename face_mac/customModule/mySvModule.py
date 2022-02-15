@@ -15,7 +15,6 @@ def timestamp(user_id):
     db = init()
     now = datetime.now()  # get current datatime
     dt = now.strftime("%d/%m/%Y %H:%M")  # format datetime
-    last_day_in_month = calendar.monthrange(now.year, now.month)[1]  # check how many day in current month
     timestamp_ls = db.child("users").child(user_id).child("timestamp").child(now.strftime('%B')).order_by_key().get()  # get timestamp list
 
     if (timestamp_ls.val() is None):  # if no timestamp add record1
