@@ -25,8 +25,6 @@ def timestamp(user_id):
         last_record = list(timestamp_ls.val())[-1]  # get lastest timestamp
         pos = last_record[-2:]  # get lastest no of timestamp eg. record_30 got "30"
         record = int(pos) + 1
-        curr_day = (list(timestamp_ls.val().values()))[-1][:2]  # get current day
-
         d = db.child('users').child(user_id).child('timestamp').child(now.strftime('%B')).update({f'record{str(record).zfill(2)}': f"{dt}"})
         write_csv(d, 'users.csv')
         
