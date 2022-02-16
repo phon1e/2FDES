@@ -1,10 +1,11 @@
 #include <iostream>
 #include <fstream>
-//#include<SPI.h>
-//#include<SD.h>
+#include<iostream>
+#include<iomanip>
+#include<string>
 #include "./esppl_functions.h"
 
-//using namespace std;
+using namespace std;
 /*
  * Define you friend's list size here
  */
@@ -13,9 +14,9 @@
  * This is your friend's MAC address list
  */
 uint8_t friendmac[LIST_SIZE][ESPPL_MAC_LEN] = {
-   {}//iphone 5GHz
-  ,{}//iphone 2.4Ghz
-  ,{}//ipad
+   {0xfa,0x6c,0xb6,0x92,0x9c,0x39}//iphone 2.4 GHz
+  ,{0x66,0x38,0xf3,0xe9,0x08,0x99}//iphone 5 Ghz
+  ,{0xfc,0x1d,0x43,0x31,0x94,0xc5}//ipad
   
   };
 /*
@@ -23,9 +24,9 @@ uint8_t friendmac[LIST_SIZE][ESPPL_MAC_LEN] = {
  * put them in the same order as the MAC addresses
  */
 String friendname[LIST_SIZE] = {
-   "wiroon's iphone 5GHz"
-   ,"wiroon's iphone 2.4GHz"
-  ,"wiroon's ipad "
+    "1_1"
+   ,"1_2"
+   ,"2_1"
   };
 
 bool maccmp(uint8_t *mac1, uint8_t *mac2) {
@@ -37,16 +38,17 @@ bool maccmp(uint8_t *mac1, uint8_t *mac2) {
   return true;
 }
 
-
-
 void cb(esppl_frame_info *info) {
+  char buffer[32];
   
   for (int i=0; i<LIST_SIZE; i++) {
     if (maccmp(info->sourceaddr, friendmac[i]) || maccmp(info->receiveraddr, friendmac[i])) {
-   
-      //Serial.printf("\n%s id is %d :)", friendname[i].c_str(), i);
-      Serial.printf("\n%d", i);
-      
+    
+      Serial.printf(" \n%s ", friendname[i].c_str());
+      //Serial.printf("\n%d", i);
+      //sprintf(buffer,"%s",friendmac[i]);
+      //Serial.println(buffer);
+
     }
   }
 }
