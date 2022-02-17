@@ -64,3 +64,18 @@ def connect(host='https://firebase.google.com/'):
         return True
     except:
         return False
+    
+def dl_img(dst_folder):
+    db = init()
+    firebaseConfig = readJs('config2.json')
+    firebase = pyrebase.initialize_app(firebaseConfig)
+    storage = firebase.storage()
+    
+    u = db.child("users").get()
+    all_user = u.val().keys()
+    all_user_ls = list(all_user)
+   
+    
+    for usr in all_user_ls:
+        storage.child(f"images/{usr}/face.png" ).download(" ", f"{dst_folder}/{usr}.png")
+        storage.child(f"images/{usr}/face.jpeg").download(" ", f"{dst_folder}/{usr}.jpeg")
