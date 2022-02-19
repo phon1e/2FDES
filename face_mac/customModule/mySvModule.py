@@ -10,10 +10,11 @@ def init():
     firebaseConfig = readJs('config.json')
     firebase = pyrebase.initialize_app(firebaseConfig)
     if(connect()):
+        print("Connected to Internet")
         return firebase.database()
     else:
         print("No Internet")
-    dl_img("faces")
+    dl_img("faces")# <-- destination folder download data from firebase storage user's face 
 
 def timestamp(user_id):
     db = init()
@@ -68,12 +69,12 @@ def dl_img(dst_folder):
     firebase = pyrebase.initialize_app(firebaseConfig)
     storage = firebase.storage()
 
-    u = db.child("users").get()
+    u = db.child("users").get() #get all user name in db
     all_user = u.val().keys()
     all_user_ls = list(all_user)
 
-    for usr in all_user_ls:
-        storage.child(f"images/{usr}/face.png").download(" ", f"{dst_folder}/{usr}.png")
+    for usr in all_user_ls: 
+        storage.child(f"images/{usr}/face.png").download(" ", f"{dst_folder}/{usr}.png") #iterate all user and download
         storage.child(f"images/{usr}/face.jpeg").download(" ", f"{dst_folder}/{usr}.jpeg")
 
 
