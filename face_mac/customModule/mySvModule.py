@@ -1,4 +1,5 @@
 import csv
+import time
 import json
 import pyrebase
 from datetime import datetime
@@ -8,16 +9,20 @@ import urllib.request
 def init():
     firebaseConfig = readJs('config.json')
     firebase = pyrebase.initialize_app(firebaseConfig)
-    if connect(): 
+    if(connect()):
         return firebase.database()
     else:
-        print("No internet")
+        print("No Internet")
+    dl_img("faces")
 
 def timestamp(user_id):
     db = init()
     now = datetime.now()  # get current datatime
     dt = now.strftime("%d/%m/%Y %H:%M")  # format datetime
+    last_day_in_month = calendar.monthrange(now.year, now.month)[1]  # check how many day in current month
     timestamp_ls = db.child("users").child(user_id).child("timestamp").child(now.strftime('%B')).order_by_key().get()  # get timestamp list
+    user_name = db.child("users").child(user_id).child("username").get()
+    user_dict = {}
 
     if (timestamp_ls.val() is None):  # if no timestamp add record1
         record = 1
@@ -26,9 +31,12 @@ def timestamp(user_id):
         last_record = list(timestamp_ls.val())[-1]  # get lastest timestamp
         pos = last_record[-2:]  # get lastest no of timestamp eg. record_30 got "30"
         record = int(pos) + 1
+        curr_day = (list(timestamp_ls.val().values()))[-1][:2]  # get current day
         d = db.child('users').child(user_id).child('timestamp').child(now.strftime('%B')).update({f'record{str(record).zfill(2)}': f"{dt}"})
-        write_csv(d, 'users.csv')
-        
+
+    user_dict.update({user_name.val(): d})
+    write_csv(user_dict, 'user.csv')
+
 def readJs(filename):
    if (isinstance(filename,str)):
         with open(filename) as json_file:
@@ -53,29 +61,31 @@ def uploadImg(folder, filename, file):
     storage = firebase.storage()
     storage.child(f"{folder}/{filename}").put(file)
 
+
+def dl_img(dst_folder):
+    db = init()
+    firebaseConfig = readJs('config2.json')
+    firebase = pyrebase.initialize_app(firebaseConfig)
+    storage = firebase.storage()
+
+    u = db.child("users").get()
+    all_user = u.val().keys()
+    all_user_ls = list(all_user)
+
+    for usr in all_user_ls:
+        storage.child(f"images/{usr}/face.png").download(" ", f"{dst_folder}/{usr}.png")
+        storage.child(f"images/{usr}/face.jpeg").download(" ", f"{dst_folder}/{usr}.jpeg")
+
+
 def write_csv(data,filename):
     with open(filename, 'w', encoding='UTF8') as f:
         writer = csv.writer(f)
-        writer.writerow(data)
-        
+        for k, v in data.items():
+            writer.writerow([k, v])
+
 def connect(host='https://firebase.google.com/'):
     try:
         urllib.request.urlopen(host)
         return True
     except:
         return False
-    
-def dl_img(dst_folder):
-    db = init()
-    firebaseConfig = readJs('config2.json')
-    firebase = pyrebase.initialize_app(firebaseConfig)
-    storage = firebase.storage()
-    
-    u = db.child("users").get()
-    all_user = u.val().keys()
-    all_user_ls = list(all_user)
-   
-    
-    for usr in all_user_ls:
-        storage.child(f"images/{usr}/face.png" ).download(" ", f"{dst_folder}/{usr}.png")
-        storage.child(f"images/{usr}/face.jpeg").download(" ", f"{dst_folder}/{usr}.jpeg")
