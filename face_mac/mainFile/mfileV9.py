@@ -15,9 +15,8 @@ faceList = []
 markedNameList = []
 markedTimeList = []
 mac_list = []
-uKey_list = ["0","107109432922795666002", "118362548782737790824"]
-
 db = mySvModule.readJs("loadedJS.json")
+uKey_list = mySvModule.get_user_key(db)
 
 cap = cv2.VideoCapture(0)
 cap.set(cv2.CAP_PROP_FRAME_WIDTH, 640)
