@@ -1,5 +1,4 @@
 import csv
-import time
 import json
 import pyrebase
 from datetime import datetime
@@ -7,16 +6,16 @@ import calendar
 import urllib.request
 
 def init():
-    firebaseConfig = readJs('config.json')
+    firebaseConfig = readJs('config2.json')
     firebase = pyrebase.initialize_app(firebaseConfig)
     if(connect()):
-        print("Connected to Internet")
+        print("Connected")
         return firebase.database()
     else:
         print("No Internet")
-    dl_img("faces")# <-- destination folder download data from firebase storage user's face 
+    # dl_img("faces")
 
-def dlJson():
+def downloadJson():
     db = init()
     data = db.child("users").get()
     data = data.val()
@@ -24,7 +23,6 @@ def dlJson():
     loadJs(data, "userdata.json", 5)
     print("download complete")
 
-    
 def timestamp(user_id):
     db = init()
     now = datetime.now()  # get current datatime
@@ -48,11 +46,9 @@ def timestamp(user_id):
     write_csv(user_dict, 'user.csv')
 
 def readJs(filename):
-   if (isinstance(filename,str)):
-        with open(filename) as json_file:
-            d = json.load(json_file)
-        return d
-   raise TypeError('All must be String ! !')
+    with open(filename) as json_file:
+        d = json.load(json_file)
+    return d
 
 def loadJs(data, filename, ind):
     json_object = json.dumps(data, indent= ind)
@@ -78,12 +74,12 @@ def dl_img(dst_folder):
     firebase = pyrebase.initialize_app(firebaseConfig)
     storage = firebase.storage()
 
-    u = db.child("users").get() #get all user name in db
+    u = db.child("users").get()
     all_user = u.val().keys()
     all_user_ls = list(all_user)
 
-    for usr in all_user_ls: 
-        storage.child(f"images/{usr}/face.png").download(" ", f"{dst_folder}/{usr}.png") #iterate all user and download
+    for usr in all_user_ls:
+        storage.child(f"images/{usr}/face.png").download(" ", f"{dst_folder}/{usr}.png")
         storage.child(f"images/{usr}/face.jpeg").download(" ", f"{dst_folder}/{usr}.jpeg")
 
 
@@ -92,10 +88,10 @@ def write_csv(data,filename):
         writer = csv.writer(f)
         for k, v in data.items():
             writer.writerow([k, v])
-            
+
 def get_user_key(db):
     ls = list(db.keys())
-    ls.insert(0, "0") #insert 0 at front for handle mac addr indexing
+    ls.insert(0, "0")#insert 0 at front for handle mac addr indexing
     return ls
 
 def connect(host='https://firebase.google.com/'):
