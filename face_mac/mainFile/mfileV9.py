@@ -5,6 +5,8 @@ import mySerialEsp2, time, threading
 import concurrent.futures
 import mySvModule
 import time
+
+mySvModule.dl_img(path)
 key = 'users'
 path = 'ImagesAttendance/faces'
 
