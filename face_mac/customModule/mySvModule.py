@@ -16,7 +16,7 @@ def init():
         print("No Internet")
     dl_img("faces")# <-- destination folder download data from firebase storage user's face 
 
-def downloadJson():
+def dlJson():
     db = init()
     data = db.child("users").get()
     data = data.val()
