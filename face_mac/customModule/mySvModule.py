@@ -13,7 +13,6 @@ def init():
         return firebase.database()
     else:
         print("No Internet")
-    # dl_img("faces")
 
 def downloadJson():
     db = init()
