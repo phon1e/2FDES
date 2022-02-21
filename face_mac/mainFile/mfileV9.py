@@ -207,6 +207,8 @@ def face_recog():
                 mac = db[key][userKey]["macAddress"][f"device{mac_found}"]
                 valid_user = True
                 
+            if len(user_around) > 300:
+                user_around.clear()
                 
             else:
                 name = 'Unknown'
