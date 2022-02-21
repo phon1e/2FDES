@@ -92,6 +92,11 @@ def write_csv(data,filename):
         writer = csv.writer(f)
         for k, v in data.items():
             writer.writerow([k, v])
+            
+def get_user_key(db):
+    ls = list(db.keys())
+    ls.insert(0, "0") #insert 0 at front for handle mac addr indexing
+    return ls
 
 def connect(host='https://firebase.google.com/'):
     try:
