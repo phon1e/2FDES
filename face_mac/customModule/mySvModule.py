@@ -16,6 +16,15 @@ def init():
         print("No Internet")
     dl_img("faces")# <-- destination folder download data from firebase storage user's face 
 
+def downloadJson():
+    db = init()
+    data = db.child("users").get()
+    data = data.val()
+    print("downloading....")
+    loadJs(data, "userdata.json", 5)
+    print("download complete")
+
+    
 def timestamp(user_id):
     db = init()
     now = datetime.now()  # get current datatime
