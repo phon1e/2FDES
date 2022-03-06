@@ -18,9 +18,9 @@ def downloadJson():
     db = init()
     data = db.child("users").get()
     data = data.val()
-    print("downloading....")
+    print("downloading.... ")
     loadJs(data, "userdata.json", 5)
-    print("download complete")
+    print("download userdata completed")
 
 def timestamp(user_id):
     db = init()
@@ -92,6 +92,11 @@ def get_user_key(db):
     ls = list(db.keys())
     ls.insert(0, "0")#insert 0 at front for handle mac addr indexing
     return ls
+
+def mac_format(mac_str): # change A2:B3 => 0xa5.0xb3
+    h = mac_str.replace(":", " ")
+    h = ','.join([f"0x{i}" for i in h.split()])
+    return h    #return 0x format
 
 def connect(host='https://firebase.google.com/'):
     try:
