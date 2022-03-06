@@ -46,7 +46,7 @@ def findEncodings(images):
         img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
         encode = face_recognition.face_encodings(img)[0]
         encodeList.append(encode)
-        np.savez_compressed('endcodeList.npz', data = encodeList)
+        np.savez_compressed('endcodeList.npz', data = encodeList) #encodnig and save as encodeList.npz
         print(f'Processing " + "{round((counter / len(images) * 100), 2):.2f} %')
     print("Finished Encoding Images.")
     #return encodeList
