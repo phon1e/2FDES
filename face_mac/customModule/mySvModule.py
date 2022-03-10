@@ -24,19 +24,19 @@ def timestamp(user_id):
     now = datetime.now()  # get current datatime
     dt = now.strftime("%d/%m/%Y %H:%M")  # format datetime
     last_day_in_month = calendar.monthrange(now.year, now.month)[1]  # check how many day in current month
-    timestamp_ls = db.child("users").child(user_id).child("timestamp").child(now.strftime('%B')).order_by_key().get()  # get timestamp list
+    timestamp_ls = db.child("users").child(user_id).child("timestamp").child(now.strftime('%Y')).child(now.strftime('%B')).order_by_key().get()  # get timestamp list
     user_name = db.child("users").child(user_id).child("username").get()
     user_dict = {}
 
     if (timestamp_ls.val() is None):  # if no timestamp add record1
         record = 1
-        d = db.child('users').child(user_id).child('timestamp').child(now.strftime('%B')).order_by_key().update({f'record0{record}': f"{dt}"})
+        d = db.child('users').child(user_id).child('timestamp').child(now.strftime('%Y')).child(now.strftime('%B')).order_by_key().update({f'record0{record}': f"{dt}"})
     else:
         last_record = list(timestamp_ls.val())[-1]  # get lastest timestamp
         pos = last_record[-2:]  # get lastest no of timestamp eg. record_30 got "30"
         record = int(pos) + 1
         curr_day = (list(timestamp_ls.val().values()))[-1][:2]  # get current day
-        d = db.child('users').child(user_id).child('timestamp').child(now.strftime('%B')).update({f'record{str(record).zfill(2)}': f"{dt}"})
+        d = db.child('users').child(user_id).child('timestamp').child(now.strftime('%Y')).child(now.strftime('%B')).update({f'record{str(record).zfill(2)}': f"{dt}"})
 
     user_dict.update({user_name.val(): d})
     write_csv(user_dict, 'user.csv')
