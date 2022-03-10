@@ -111,7 +111,7 @@ def mapping():
 
     k = 0
     for usr in u_ls:
-        k += 1
+        
         dict = data[usr]["macAddress"]
         v = 0
         for i in dict.values():
@@ -119,6 +119,7 @@ def mapping():
             i = mac_format(i)
             mac.append(i)
             mac_mapped.append(f"{k}_{v}")
+        k += 1
     return mac, mac_mapped
 
 
