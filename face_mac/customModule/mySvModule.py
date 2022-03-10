@@ -102,7 +102,26 @@ def get_user_key(db):
 def mac_format(mac_str):
     h = mac_str.replace(":", " ")
     h = ','.join([f"0x{i}" for i in h.split()])
-    return h
+    return h.lower()
+
+def mapping():
+    data = readJs("userdata.json")
+    u_ls = get_user_key(data)
+    mac = []
+    mac_mapped = []
+
+    k = 0
+    for usr in u_ls:
+        k += 1
+        dict = data[usr]["macAddress"]
+        v = 0
+        for i in dict.values():
+            v += 1
+            i = mac_format(i)
+            mac.append(i)
+            mac_mapped.append(f"{k}_{v}")
+    return mac, mac_mapped
+
 
 def connect(host='https://firebase.google.com/'):
     try:
