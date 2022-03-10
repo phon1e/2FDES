@@ -33,20 +33,18 @@ def timestamp(user_id):
 
     if (timestamp_ls.val() is None):  # if no timestamp add record1
         record = 1
-        d = db.child('users').child(user_id).child('timestamp').child(now.strftime('%Y')).child(now.strftime('%B')).order_by_key().update({f'record0{record}': f"{dt}"})
-        lt = d
-        lt = db.child('users').child(user_id).child('timestamp').order_by_key().update({f'lastStamp': f"{dt}"})
+        db.child('users').child(user_id).child('timestamp').child(now.strftime('%Y')).child(now.strftime('%B')).order_by_key().update({f'record0{record}': f"{dt}"})
+        db.child('users').child(user_id).child('timestamp').order_by_key().update({f'lastStamp': f"{dt}"})
     else:
         last_record = list(timestamp_ls.val())[-1]  # get lastest timestamp
         pos = last_record[-2:]  # get lastest no of timestamp eg. record_30 got "30"
         record = int(pos) + 1
         curr_day = (list(timestamp_ls.val().values()))[-1][:2]  # get current day
-        d = db.child('users').child(user_id).child('timestamp').child(now.strftime('%Y')).child(now.strftime('%B')).update({f'record{str(record).zfill(2)}': f"{dt}"})
-        lt = d
-        lt = db.child('users').child(user_id).child('timestamp').order_by_key().update({f'lastStamp': f"{dt}"})
+        db.child('users').child(user_id).child('timestamp').child(now.strftime('%Y')).child(now.strftime('%B')).update({f'record{str(record).zfill(2)}': f"{dt}"})
+        db.child('users').child(user_id).child('timestamp').order_by_key().update({f'lastStamp': f"{dt}"})
 
-    user_dict.update({user_name.val(): d})
-    write_csv(user_dict, 'user.csv')
+    # user_dict.update({user_name.val(): d})
+    # write_csv(user_dict, 'user.csv')
 
 def readJs(filename):
     with open(filename) as json_file:
