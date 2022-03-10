@@ -88,8 +88,7 @@ def dl_img(dst_folder):
 def write_csv(data,filename):
     with open(filename, 'w', encoding='UTF8') as f:
         writer = csv.writer(f)
-        for k, v in data.items():
-            writer.writerow([k, v])
+        writer.writerow(data)
 
 def get_user_key(db):
     ls = list(db.keys())
@@ -121,6 +120,18 @@ def mapping():
             mac.append(i)
             mac_mapped.append(f"{k}_{v}")
     return mac, mac_mapped
+
+
+def updateMac():
+    mac, mapped = mapping()
+    with open('mac.txt', 'w') as f:
+        for line in mac:
+            f.write('"' + line + '"' + ',')
+            f.write('\n')
+    with open('mapped.txt', 'w') as f:
+        for line in mapped:
+            f.write('"' + line + '"' + ',')
+            f.write('\n')
 
 
 def connect(host='https://firebase.google.com/'):
