@@ -8,16 +8,19 @@ import urllib.request
 def init():
     firebaseConfig = readJs('config2.json')
     firebase = pyrebase.initialize_app(firebaseConfig)
-    return firebase.database()
-
+    if(connect()):
+        print("Connected")
+        return firebase.database()
+    else:
+        print("No Internet")
 
 def downloadJson():
     db = init()
     data = db.child("users").get()
     data = data.val()
-    print("downloading.... userdata")
+    print("downloading.... ")
     loadJs(data, "userdata.json", 5)
-    print("download complete")
+    print("download userdata completed")
 
 def timestamp(user_id):
     db = init()
@@ -31,12 +34,16 @@ def timestamp(user_id):
     if (timestamp_ls.val() is None):  # if no timestamp add record1
         record = 1
         d = db.child('users').child(user_id).child('timestamp').child(now.strftime('%Y')).child(now.strftime('%B')).order_by_key().update({f'record0{record}': f"{dt}"})
+        lt = d
+        lt = db.child('users').child(user_id).child('timestamp').order_by_key().update({f'lastStamp': f"{dt}"})
     else:
         last_record = list(timestamp_ls.val())[-1]  # get lastest timestamp
         pos = last_record[-2:]  # get lastest no of timestamp eg. record_30 got "30"
         record = int(pos) + 1
         curr_day = (list(timestamp_ls.val().values()))[-1][:2]  # get current day
         d = db.child('users').child(user_id).child('timestamp').child(now.strftime('%Y')).child(now.strftime('%B')).update({f'record{str(record).zfill(2)}': f"{dt}"})
+        lt = d
+        lt = db.child('users').child(user_id).child('timestamp').order_by_key().update({f'lastStamp': f"{dt}"})
 
     user_dict.update({user_name.val(): d})
     write_csv(user_dict, 'user.csv')
@@ -52,13 +59,14 @@ def loadJs(data, filename, ind):
         outfile.write(json_object)
 
 def getDictKey(ls, indx):
+
     enum = enumerate(ls)
     d = dict((i,j) for j,i in enum)
     k = list(d.keys())[list(d.values()).index(indx)]
     return k
 
 def uploadImg(folder, filename, file):
-    firebaseConfig = readJs('config2.json')
+    firebaseConfig = readJs('config.json')
     firebase = pyrebase.initialize_app(firebaseConfig)
     storage = firebase.storage()
     storage.child(f"{folder}/{filename}").put(file)
@@ -87,18 +95,16 @@ def write_csv(data,filename):
 
 def get_user_key(db):
     ls = list(db.keys())
-    new_ls = []
     for usr in ls:
         if db[usr]["faceId"] == "exist":
-            new_ls.append(usr)
-    #ls.insert(0, "0") #insert 0 at front for handle mac addr indexing
-    print(f"new_ls {new_ls}")
-    return new_ls
+            print(usr)
+    # ls.insert(0, "0")#insert 0 at front for handle mac addr indexing
+    return ls
 
-def mac_format(mac_str): # change A2:B3 => 0xa5.0xb3
+def mac_format(mac_str):
     h = mac_str.replace(":", " ")
     h = ','.join([f"0x{i}" for i in h.split()])
-    return h    #return 0x format
+    return h
 
 def connect(host='https://firebase.google.com/'):
     try:
