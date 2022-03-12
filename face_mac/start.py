@@ -1,14 +1,15 @@
 import urllib.request
 import os
 
-def connect(host='https://firebase.google.com/'):
-    try:
-        urllib.request.urlopen(host)
-        print("connected to the internet")
-        return True
-    except:
-        return False
-
+def wait_for_internet():
+	print("Waiting for internet connection. . .")
+	while True:
+		try:
+			response = urllib.request.urlopen('https://firebase.google.com/', timeout = 1)
+			return
+		except: 
+			urllib.request.UnknownHandler
+			pass
 
 
 def print_txt(s):
@@ -18,6 +19,7 @@ def print_txt(s):
 
 
 def main():
+
 	main_dir = "/home/pi/Desktop/2fdes"
 	sub_dir = "/home/pi/Desktop/mkspiffs/mkspiffs-0.2.3-7-gf248296-arduino-esp8266-"
 
@@ -38,5 +40,5 @@ def main():
 	os.system("python mFileV12_1.py")
 
 
-if (connect()):
-	main()
+wait_for_internet()
+main()
