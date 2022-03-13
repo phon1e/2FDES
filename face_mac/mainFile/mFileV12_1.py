@@ -74,26 +74,23 @@ def initialized():
     if isError:
         print(error_msg)
         return False
-    else:
+   else:
         importImages()
         global encodeListKnown
-        try:
-            mySvModule.print_txt("CHECKING FACES DATA CHANGES")
+
+        mySvModule.print_txt("CHECKING FACES DATA CHANGES")
             
-            if not mySvModule.is_same(path, dst_img):
-                print_txt("FOUND CHANGES")
-                findEncodings(images)
-                mySvModule.copy_to(path, dst_img)
-            
-            mySvModule.print_txt("NO FACES DATA CHANGES")
-            encodedData = np.load('endcodeList.npz')
-            encodeListKnown = encodedData['data']
-            print("Finished Initializer.")
-            print_txt("STARTING . . .")
-        except:
+        if not mySvModule.is_same(path, dst_img):
+            mySvModule.print_txt("FOUND CHANGES")
             findEncodings(images)
-            print("call again")
-            initialized()
+            mySvModule.copy_to(path, dst_img)
+            
+        mySvModule.print_txt("NO FACES DATA CHANGES")
+        encodedData = np.load('endcodeList.npz')
+        encodeListKnown = encodedData['data']
+        print("Finished Initializer.")
+        mySvModule.print_txt("STARTING . . .")
+
         return True
 
 
