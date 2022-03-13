@@ -15,7 +15,7 @@ def init():
     else:
         print("No Internet")
 
-def downloadJson():
+def downloadJson(): # dl json file from firebase
     db = init()
     data = db.child("users").get()
     data = data.val()
@@ -23,7 +23,7 @@ def downloadJson():
     loadJs(data, "userdata.json", 5)
     print("download userdata completed")
 
-def timestamp(user_id):
+def timestamp(user_id):     # timestamp yes just timestamp...
     db = init()
     now = datetime.now()  # get current datatime
     dt = now.strftime("%d/%m/%Y %H:%M")  # format datetime
@@ -47,12 +47,12 @@ def timestamp(user_id):
     # user_dict.update({user_name.val(): d})
     # write_csv(user_dict, 'user.csv')
 
-def readJs(filename):
+def readJs(filename): # read json file and return dict
     with open(filename) as json_file:
         d = json.load(json_file)
     return d
 
-def loadJs(data, filename, ind):
+def loadJs(data, filename, ind): # load json file
     json_object = json.dumps(data, indent= ind)
     with open(filename, 'w', encoding='utf-8') as outfile:
         outfile.write(json_object)
@@ -64,14 +64,14 @@ def getDictKey(ls, indx):
     k = list(d.keys())[list(d.values()).index(indx)]
     return k
 
-def uploadImg(folder, filename, file):
+def uploadImg(folder, filename, file): # upload img to firebase storage
     firebaseConfig = readJs('config.json')
     firebase = pyrebase.initialize_app(firebaseConfig)
     storage = firebase.storage()
     storage.child(f"{folder}/{filename}").put(file)
 
 
-def dl_img(dst_folder):
+def dl_img(dst_folder):# download all img from firebase storage
     db = init()
     firebaseConfig = readJs('config2.json')
     firebase = pyrebase.initialize_app(firebaseConfig)
@@ -86,12 +86,12 @@ def dl_img(dst_folder):
         storage.child(f"images/{usr}/face.jpeg").download(" ", f"{dst_folder}/{usr}.jpeg")
 
 
-def write_csv(data,filename):
+def write_csv(data,filename):# write csv file but no use... 
     with open(filename, 'w', encoding='UTF8') as f:
         writer = csv.writer(f)
         writer.writerow(data)
 
-def get_user_key(db):
+def get_user_key(db): # get user's key(uid) in firebase database 
     ls = list(db.keys())
     haveFaceid = []
     for usr in ls:
@@ -101,12 +101,12 @@ def get_user_key(db):
     # ls.insert(0, "0")#insert 0 at front for handle mac addr indexing
     return haveFaceid#ls
 
-def mac_format(mac_str):
+def mac_format(mac_str): # change hex to decimal
     h = mac_str.replace(":", " ")
     h = ','.join([f"{int(i,16)}" for i in h.split()])
     return h.lower()
 
-def mapping():
+def mapping(): #mapping just mapping...
     downloadJson()
     data = readJs("userdata.json")
     u_ls = get_user_key(data)
@@ -125,10 +125,9 @@ def mapping():
     return mac, mac_mapped
 
 
-def updateMac():
+def updateMac():    #mapping downloaded data and generate 2 file  
     print("downloading user's mac addr and mapping. . . ")
     mac, mapped = mapping()
-    #/home/pi/Desktop/mkspiffs/mkspiffs-0.2.3-7-gf248296-arduino-esp8266-/data/
     with open('/home/pi/Desktop/mkspiffs/mkspiffs-0.2.3-7-gf248296-arduino-esp8266-/data/mac.txt', 'w') as f:
         for line in mac:
             f.write(line)
@@ -139,23 +138,20 @@ def updateMac():
             f.write('\n')
 
 
-def connect(host='https://firebase.google.com/'):
+def connect(host='https://firebase.google.com/'): # checking internet connection
     try:
         urllib.request.urlopen(host)
         return True
     except:
         return False
 
-def copy_to(src, dst):
+def copy_to(src, dst):  #copy file to tmp folder for check are they same?
     files = os.listdir(src)
     for fname in files:
         shutil.copy2(os.path.join(src, fname), dst)
 
-class dircmp(filecmp.dircmp):
-    """
-    Compare the content of dir1 and dir2. In contrast with filecmp.dircmp, this
-    subclass compares the content of files with the same path.
-    """
+class dircmp(filecmp.dircmp): # compare 2 dir
+ 
     def phase3(self):
         """
         Find out differences between common files.
@@ -164,7 +160,7 @@ class dircmp(filecmp.dircmp):
         fcomp = filecmp.cmpfiles(self.left, self.right, self.common_files,shallow=False)
         self.same_files, self.diff_files, self.funny_files = fcomp
 
-def is_same(dir1, dir2):
+def is_same(dir1, dir2):    # check all file in 2 dir is exacly same file return boolean?
     """
     Compare two directory trees content.
     Return False if they differ, True is they are the same.
@@ -178,7 +174,7 @@ def is_same(dir1, dir2):
             return False
     return True
 
-def print_txt(s):
+def print_txt(s): # print pretty txt lol
   print("="*30)
   print(f"\n {s}\n")
   print("="*30)
